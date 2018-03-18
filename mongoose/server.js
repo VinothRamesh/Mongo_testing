@@ -1,10 +1,12 @@
 var express=require('express');
 var bodyParser=require('body-Parser');
+const {ObjectId}=require('mongodb');
 
 var {Todo}=require('./Todo');
 var {mongoose}=require('./mongoose')
 
 var app=express();
+const port=process.env.port || 3000;
 
 app.use(bodyParser.json());
 
@@ -30,8 +32,27 @@ app.post('/todos',(req,res)=>{
     })
   });
 
-app.listen(3000,()=>{
-  console.log('Started port 3000');
+  app.get('/todos/:id',(req,res)=>{
+    var id=req.params.id;
+    if(!ObjectId.isValid(id)){
+      res.status(404).send();
+    }
+    else{
+    Todo.findById(id).then((todo)=>{
+    if(!todo){
+      res.status(404).send();
+    }
+    else{
+      res.status(200).send(todo);
+    }
+  }).catch((e)=>{
+    res.status(400).send();
+  })
+}
+  });
+
+app.listen(port,()=>{
+  console.log(`started port ${port}`);
 });
 
 module.exports={app};

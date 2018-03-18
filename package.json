@@ -4,8 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha mongoose/*.test.js",
+    "start":"node-mongo/mongoose/server.js",
+    "test" : "mocha mongoose/*.test.js",
     "test-watch": "nodemon --exec 'npm test'"
+  },
+  "engines":{
+    "node":"6.11.3"
   },
   "author": "",
   "license": "ISC",

@@ -4,8 +4,8 @@ const {ObjectId}=require('mongodb');
 const _=require('lodash');
 
 var {User}=require('./user');
-var {mongoose}=require('./mongoose')
-
+var {mongoose}=require('./mongoose');
+var {authenticate}=require('./authenticate');
 var app=express();
 const port=process.env.port || 3000;
 
@@ -23,13 +23,8 @@ app.post('/user',(req,res)=>{
     res.status(400).send(e);
   })
 });
-  app.get('/todos',(req,res)=>{
-    Todo.find().then((todos)=>{
-      res.send({todos});
-    },(e)=>
-    {
-      res.send(400).send(e);
-    })
+  app.get('/user/me',authenticate,(req,res)=>{
+    res.send(req.user);
   });
 
   app.get('/todos/:id',(req,res)=>{
